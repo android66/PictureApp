@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -17,9 +18,11 @@ import static android.Manifest.permission.*;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener {
     private static final int REQUEST_READ_STORAGE = 3;
     private SimpleCursorAdapter adapter;
 
@@ -74,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 to ,
                 0);
         grid.setAdapter(adapter);
+        grid.setOnItemClickListener(this);
         getLoaderManager().initLoader(0, null, this);
     }
 
@@ -91,5 +95,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view,
+                            int position, long id) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra("POSITION", position);
+        startActivity(intent);
     }
 }
